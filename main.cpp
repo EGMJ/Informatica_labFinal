@@ -21,7 +21,7 @@ class persona{
         cout << "Nombre: ";
         cin >> nombre;
         // paso a mayusculas nombre
-        for (int i = 0; i < nombre.length(); i++)
+        for (unsigned int i = 0; i < nombre.length(); i++)
         {
             nombre[i] = toupper(nombre[i]);    
         }
@@ -30,7 +30,7 @@ class persona{
         cout << "Apellido: ";
         cin >> apellido;
         // paso a mayusuculas apellido
-        for (int i = 0; i < apellido.length(); i++)
+        for (unsigned int i = 0; i < apellido.length(); i++)
         {
             apellido[i] = toupper(apellido[i]);    
         }
@@ -46,12 +46,12 @@ class clientes: public persona{
 
 
     public:
-    // clientes(int _cedula,string _nombre,string _apellido, string _direccion,int _telefono){}
+    void setCodigo(int cod){
+        codigoCliente=cod;}
+    void setCedula(int ced){
+    cedula=ced;}
     void set(){
-        cout << "Codigo cliente: ";
-        cin >> codigoCliente;
-        cout << "Cedula cliente: ";
-        cin >> cedula;
+        
         cout << "Nombre cliente: ";
         cin >> nombre;
         cout << "Apellido: ";
@@ -104,7 +104,7 @@ class cuenta{
         cout << "Tipo(CA/CC): ";
         cin >> tipo;
         
-         for (int i = 0; i < tipo.length(); i++)
+         for (unsigned int i = 0; i < tipo.length(); i++)
             {
                 tipo[i] = toupper(tipo[i]);    
             }
@@ -193,9 +193,7 @@ int main(){
     int opcion =-1;
     clientes clientesLista[20];
     empleados empleadosLista[20];
-    // cuenta cuentaLista[20];
-    // cuenta1.set();
-    // cuenta1.view();
+    
 
     registros registroLista[20];
   
@@ -216,26 +214,45 @@ int main(){
         cin>> opcion;
         switch (opcion)
         {
-            // Modifica cantidad de dias
+            // Crea usuario
         case 1:{
             cout<<""<<endl;
             int posicion=0;
+            int codigo =1;
+            int cedula =0;
+            int duplicado =0;
+            cout << "Cedula cliente: ";
+            cin >> cedula;
             while(clientesLista[posicion].codigoCliente!=0){
+                if (clientesLista[posicion].cedula ==cedula)
+                {   cout<<"Usario ya registrado"<<endl;
+                    duplicado = -1;
+                    break;
+                }else{
                 posicion++;
+                codigo++;
+                }
+                
+                
+            }if (duplicado !=-1)
+            {
+            clientesLista[posicion].setCedula(cedula);
+            clientesLista[posicion].setCodigo(codigo);
+            clientesLista[posicion].set();
+            cout<<"================================"<<endl;  /* code */
             }
             
-            clientesLista[posicion].set();
-            cout<<"================================"<<endl;
+           
             break;
             }
-            // Modificar sala/cama/cargos diarios
+            // Lista usuarios
         case 2:{
             cout<<""<<endl;
             int posicion = 0;
             cout<<"Cliente ||  Apellido"<<endl;
             while(clientesLista[posicion].codigoCliente!=0){
                 cout<<clientesLista[posicion].codigoCliente;
-                cout<< "    ||    ";
+                cout<< "       ||    ";
                 cout<< clientesLista[posicion].apellido<<endl;
                 posicion++;
             }
@@ -243,7 +260,7 @@ int main(){
             cout<<"================================"<<endl;  
             break;
         }
-            // lista todos los pacientes
+            // Crea cuenta
         case 3:{
             int cliente = -1;
             // int lista[20];
@@ -264,7 +281,7 @@ int main(){
             int registroPos=0;
              while(clientesLista[posicion].codigoCliente!=0){
                  if(clientesLista[posicion].codigoCliente==cliente){
-                     cout<<"entró"<<endl;
+                     
                     registroPos=0;
                      while (registroLista[registroPos].status!=-1)
                      {
@@ -287,14 +304,15 @@ int main(){
             } 
             if (registroLista[registroPos].status!=1)
             {
-                cout<<"Cliente ingresado incorrecto"<<endl;/* code */
+                cout<<"Cliente ingresado incorrecto"<<endl;
+                cout<<"================================"<<endl;
             }
             
             
             
             break;
             }
-        
+            // Lista cuentas
         case 4:{
             int cuentaPos=0;
             while(registroLista[cuentaPos].status!=-1){
@@ -303,6 +321,7 @@ int main(){
               }
             break;
         }
+            // Deposita
         case 5:{
             
             int cuentaPos=0;
@@ -318,11 +337,12 @@ int main(){
                  cuentaPos++;
             }
             
-            cout<<cuentaPos<<endl;
+            // cout<<cuentaPos<<endl;
             registroLista[cuentaPos].cuentaCliente.deposit();
             registroLista[cuentaPos].cuentaCliente.view();
             break;
         }
+            // Retirar
         case 6:{
             // Retirar
             int cuentaPos=0;
@@ -341,6 +361,7 @@ int main(){
             registroLista[cuentaPos].cuentaCliente.view();
             break;
         }
+            // Saldo total bancario
         case 7:{
             int cuentaPos=0;
             float saldoBancarioPeso= 0;
